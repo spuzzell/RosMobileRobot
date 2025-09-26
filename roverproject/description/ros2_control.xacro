@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- When sim_mode is false, use the real hardware interface -->
+    <xacro:unless value="$(arg sim_mode)">
+        <ros2_control name="RealHardware" type="system">
+
+            <hardware>
+                <plugin>ros2_control_rover_hardware/RoverHardware</plugin>    
+
+                <!-- Wheel joint names for hardware interface.
+                     The *_void_name parameters may be used for slave wheels. -->
+                <param name="left_wheel_name">Fleft_wheel_joint</param>
+                <param name="right_wheel_name">Fright_wheel_joint</param>
+
+                <!-- Encoder counts per revolution for each wheel -->
+                <param name="left_enc_counts_per_rev">2096</param>
+                <param name="right_enc_counts_per_rev">2096</param>
+
+                <!-- Hardware communication parameters -->
+                <param name="loop_rate">30</param>         <!-- Loop rate in Hz? -->
+                <param name="device">/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0</param>  <!-- Serial device -->
+                <param name="baud_rate">115200</param>      <!-- Baud rate for serial communication -->
+                <param name="timeout_ms">1000</param>      <!-- Communication timeout in milliseconds -->
+
+            </hardware>
+
+            <!-- Joint interfaces for each wheel.
+                 Velocity command interface is in rad/s.
+                 State interfaces provide feedback in rad/s (velocity) and rad (position). -->
+            <joint name="Fleft_wheel_joint">
+                <command_interface name="velocity">
+                    <param name="min">-8.7</param>         <!-- Minimum velocity (rad/s) -->
+                    <param name="max">8.7</param>          <!-- Maximum velocity (rad/s) -->
+                </command_interface>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+
+            <joint name="Fright_wheel_joint">
+                <command_interface name="velocity">
+                    <param name="min">-8.7</param>
+                    <param name="max">8.7</param>
+                </command_interface>
+                <state_interface name="position"/>
+                <state_interface name="velocity"/>
+            </joint>
+
+        </ros2_control>
+    </xacro:unless>
+
+    <!-- When sim_mode is true, use Gazebo-ROS2 Control Controller -->
+    <xacro:if value="$(arg sim_mode)">
+        <ros2_control name="GazeboSystem" type="system">
+
+            <hardware>
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+            </hardware>
+
+            <!-- Joint interfaces for simulation, same as hardware -->       
+            <joint name="Fleft_wheel_joint">
+                <command_interface name="velocity">
+                    <param name="min">-8.7</param>
+                    <param name="max">8.7</param>
+                </command_interface>
+                <state_interface name="velocity"/>
+                <state_interface name="position"/>
+            </joint>
+
+            <joint name="Rleft_wheel_joint">
+                <command_interface name="velocity">
+                    <param name="min">-8.7</param>
+                    <param name="max">8.7</param>
+                </command_interface>
+                <state_interface name="velocity"/>
+                <state_interface name="position"/>
+            </joint>
+
+            <joint name="Fright_wheel_joint">
+                <command_interface name="velocity">
+                    <param name="min">-8.7</param>
+                    <param name="max">8.7</param>
+                </command_interface>
+                <state_interface name="velocity"/>
+                <state_interface name="position"/>
+            </joint>
+
+            <joint name="Rright_wheel_joint">
+                <command_interface name="velocity">
+                    <param name="min">-8.7</param>
+                    <param name="max">8.7</param>
+                </command_interface>
+                <state_interface name="velocity"/>
+                <state_interface name="position"/>
+            </joint>
+
+        </ros2_control>
+    </xacro:if>
+
+        <!-- Gazebo plugin for ROS 2 Control integration in simulation
+             Only see if using gazebo so no need for conditional statement -->
+        <gazebo>
+            <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system.so">
+                <parameters>$(find roverproject)/config/my_controllers.yaml</parameters>
+                <parameters>$(find roverproject)/config/gaz_ros2_ctl_use_sim.yaml</parameters>
+            </plugin>
+        </gazebo>
+    
+
+</robot>

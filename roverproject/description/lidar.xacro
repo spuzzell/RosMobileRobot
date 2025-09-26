@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Include macros for inertial properties -->
+    <xacro:include filename="inertial_macros.xacro" />
+
+    <!-- Define black material for lidar visualization -->
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+    <!-- Fixed joint attaching the lidar to the chassis -->
+    <joint name="laser_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="laser_frame"/>
+        <origin xyz="0 0 0.089" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Lidar sensor link definition -->
+    <link name="laser_frame">
+        <visual>
+            <geometry>
+                <cylinder radius="0.035" length="0.055"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        
+        <collision>
+            <geometry>
+                <cylinder radius="0.035" length="0.055"/>
+            </geometry>
+        </collision>
+
+        <!-- Inertial properties for the lidar link -->
+        <xacro:inertial_cylinder mass="0.17" length="0.055" radius="0.035">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+
+    </link>
+
+     <!-- Gazebo-specific sensor and material configuration for the lidar -->
+    <gazebo reference="laser_frame">
+        <material>Gazebo/Black</material>
+
+        <!-- GPU Lidar sensor plugin configuration -->
+        <sensor name="laser" type="gpu_lidar">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>false</visualize>
+            <update_rate>10</update_rate>
+            <lidar>
+                <scan>
+                    <horizontal>
+                        <samples>365</samples>         <!-- Number of scan points per revolution -->
+                        <min_angle>-3.14</min_angle>   <!-- Minimum scan angle (radians) -->
+                        <max_angle>3.14</max_angle>    <!-- Maximum scan angle (radians) -->
+                    </horizontal>
+                </scan>
+                <range>
+                    <min>0.15</min>                     <!-- Minimum range in meters -->
+                    <max>12</max>                      <!-- Maximum range in meters -->
+                </range>
+            </lidar>
+            <topic>scan</topic>                        <!-- ROS topic for publishing scan data -->
+            <gz_frame_id>laser_frame</gz_frame_id>     <!-- Gazebo frame ID for the lidar sensor -->
+        </sensor>
+    </gazebo>
+
+</robot>

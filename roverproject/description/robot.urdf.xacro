@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
+    
+    <!-- Argument to enable or disable ROS 2 Control integration -->
+    <xacro:arg name="use_ros2_control" default="true"/>
+    <!-- Argument to specify simulation mode (true for simulation, false for real hardware) -->
+    <xacro:arg name="sim_mode" default="false"/>
+
+    <!-- Include the appropriate control interface based on use_ros2_control argument -->
+    <xacro:if value="$(arg use_ros2_control)">
+        <xacro:include filename="ros2_control.xacro" />
+    </xacro:if>
+    <xacro:unless value="$(arg use_ros2_control)">
+        <xacro:include filename="gazebo_control.xacro" />
+    </xacro:unless>
+
+    <!-- Include the main robot structure and components -->
+    <xacro:include filename="robot_core.xacro" />
+    
+    <!-- Include sensor definitions -->
+    <xacro:include filename="lidar.xacro" />
+    <xacro:include filename="camera.xacro" />
+    <!-- xacro:include filename="imu.xacro" /-->
+    <!--xacro:include filename="joint.xacro" /-->
+</robot>
+

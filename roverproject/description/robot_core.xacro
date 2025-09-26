@@ -1,0 +1,340 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+
+    <!-- ==================================================================== -->
+    <!--                               BASE LINK                              -->
+    <!-- ==================================================================== -->
+
+    <link name="base_link"></link>
+
+    <!-- ==================================================================== -->
+    <!--                          BASE_FOOTPRINT LINK                         -->
+    <!-- ==================================================================== -->
+    
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="base_footprint"></link>
+
+    <!-- ==================================================================== -->
+    <!--                              CHASSIS LINK                            -->
+    <!-- ==================================================================== -->
+
+    <!-- - - - - - - - - - - - - - - URDF Definition  - - - - - - - - - - - - -->
+    <joint name="chassis_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="chassis"/>
+        <origin xyz="0 0 0.16764"/>
+    </joint>
+
+    <link name="chassis">
+
+        <visual>
+            <origin xyz="-0.2065 0.1735 -0.092" rpy="${pi/2} 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/Chassis.dae"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="-0.2065 0.1735 -0.092" rpy="${pi/2} 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/Chassis.dae"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="0.99559"/>
+            <origin xyz="0.005429 0.000145 0.004369" rpy="0 0 0"/>
+            <inertia ixx="0.001899" ixy="0.000001" ixz="-0.000141"
+                    iyy="0.011098" iyz="0.000000" izz="0.012037" />
+        </inertial>
+
+    </link>
+
+    <!--  - - - - - - - - - - - - - Gazebo Properties - - - - - - - - - - - - -->
+    <gazebo reference="chassis">
+    </gazebo>
+
+
+
+
+
+    <!-- ==================================================================== -->
+    <!--                          LEFT SIDE ROCKER                            -->
+    <!-- ==================================================================== -->
+
+    <!-- - - - - - - - - - - - - - - URDF Definition  - - - - - - - - - - - - -->
+    <joint name="LRocker_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="LRocker"/>
+        <origin xyz="0 0.1468 0" rpy="-${pi/2} 0 0"/>
+    </joint>
+
+    <link name="LRocker">
+
+        <visual>
+            <origin xyz="-0.15 0.11864 0.064" rpy="${pi} 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/Rocker.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="-0.15 0.11864 0.064" rpy="${pi} 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/Rocker.dae" scale="1 1 1"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="0.92026"/>
+            <origin xyz="0.031779 0.057145 -0.023992" rpy="0 0 0"/>
+            <inertia ixx="0.006458" ixy="0.002671" ixz="-0.002809"
+                    iyy="0.010813" iyz="-0.002105" izz="0.001196" />
+        </inertial>
+
+    </link>
+
+    <!--  - - - - - - - - - - - - - Gazebo Properties - - - - - - - - - - - - -->
+    <gazebo reference="LRocker">
+    </gazebo>
+
+
+
+
+
+    <!-- ==================================================================== -->
+    <!--                          RIGHT SIDE ROCKER                           -->
+    <!-- ==================================================================== -->
+
+    <!-- - - - - - - - - - - - - - - URDF Definition  - - - - - - - - - - - - -->
+    <joint name="RRocker_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="RRocker"/>
+        <origin xyz="0 -0.1468 0" rpy="${pi/2} 0 0"/>
+    </joint>
+
+    <link name="RRocker">
+
+        <visual>
+            <origin xyz="0.15 -0.11864 0.064" rpy="${pi} 0 ${pi}"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/Rocker.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="0.15 -0.11864 0.064" rpy="${pi} 0 ${pi}"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/Rocker.dae" scale="1 1 1"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="0.92026"/>
+            <origin xyz="-0.031779 -0.057145 -0.023992" rpy="0 0 0"/>
+            <inertia ixx="0.006458" ixy="0.002671" ixz="0.002809"
+                    iyy="0.010813" iyz="0.002105" izz="0.001196" />
+        </inertial>
+
+    </link>
+
+    <!--  - - - - - - - - - - - - - Gazebo Properties - - - - - - - - - - - - -->
+    <gazebo reference="RRocker">
+    </gazebo>
+
+
+
+
+
+    <!-- ==================================================================== -->
+    <!--                        FRONT LEFT WHEEL LINK                         -->
+    <!-- ==================================================================== -->
+
+    <!-- - - - - - - - - - - - - - - URDF Definition  - - - - - - - - - - - - -->
+    <joint name="Fleft_wheel_joint" type="continuous">
+        <parent link="LRocker"/>
+        <child link="Fleft_wheel"/>
+        <origin xyz="0.12 0.08814 0.0285" rpy="0 0 0" />
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="Fleft_wheel">
+
+        <visual>
+            <origin xyz="-0.08 -0.08 -0.01" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/wheel.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="-0.08 -0.08 -0.01" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/wheel.dae" scale="1 1 1"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="0.172951"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0.000360" ixy="0.000000" ixz="0.000000"
+                    iyy="0.000360" iyz="0.000000" izz="0.000709" />
+        </inertial>
+
+    </link>
+
+
+
+
+
+
+
+    <!-- ==================================================================== -->
+    <!--                        REAR LEFT WHEEL LINK                          -->
+    <!-- ==================================================================== -->
+
+    <!-- - - - - - - - - - - - - - - URDF Definition  - - - - - - - - - - - - -->
+    <joint name="Rleft_wheel_joint" type="continuous">
+        <parent link="LRocker"/>
+        <child link="Rleft_wheel"/>
+        <origin xyz="-0.12 0.08814 0.0285" rpy="0 0 0" />
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="Rleft_wheel">
+
+        <visual>
+            <origin xyz="-0.08 -0.08 -0.01" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/wheel.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="-0.08 -0.08 -0.01" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/wheel.dae" scale="1 1 1"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="0.172951"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0.000360" ixy="0.000000" ixz="0.000000"
+                    iyy="0.000360" iyz="0.000000" izz="0.000709" />
+        </inertial>
+
+    </link>
+
+
+
+
+
+
+
+    <!-- ==================================================================== -->
+    <!--                       FRONT RIGHT WHEEL LINK                         -->
+    <!-- ==================================================================== -->
+
+    <!-- - - - - - - - - - - - - - - URDF Definition  - - - - - - - - - - - - -->
+    <joint name="Fright_wheel_joint" type="continuous">
+        <parent link="RRocker"/>
+        <child link="Fright_wheel"/>
+        <origin xyz="0.12 -0.08814 0.0285" rpy="0 0 0" />
+        <axis xyz="0 0 -1"/>
+    </joint>
+
+    <link name="Fright_wheel">
+
+        <visual>
+            <origin xyz="-0.08 -0.08 -0.01" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/wheel.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="-0.08 -0.08 -0.01" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/wheel.dae" scale="1 1 1"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="0.172951"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0.000360" ixy="0.000000" ixz="0.000000"
+                    iyy="0.000360" iyz="0.000000" izz="0.000709" />
+        </inertial>
+
+    </link>
+
+
+
+
+
+
+
+    <!-- ==================================================================== -->
+    <!--                         REAR RIGHT WHEEL LINK                        -->
+    <!-- ==================================================================== -->
+
+    <!-- - - - - - - - - - - - - - - URDF Definition  - - - - - - - - - - - - -->
+    <joint name="Rright_wheel_joint" type="continuous">
+        <parent link="RRocker"/>
+        <child link="Rright_wheel"/>
+        <origin xyz="-0.12 -0.08814 0.0285" rpy="0 0 0" />
+        <axis xyz="0 0 -1"/>
+    </joint>
+
+    <link name="Rright_wheel">
+
+        <visual>
+            <origin xyz="-0.08 -0.08 -0.01" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/wheel.dae" scale="1 1 1"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin xyz="-0.08 -0.08 -0.01" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://roverproject/meshes/wheel.dae" scale="1 1 1"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="0.172951"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0.000360" ixy="0.000000" ixz="0.000000"
+                    iyy="0.000360" iyz="0.000000" izz="0.000709" />
+        </inertial>
+
+    </link>
+
+    <!--  - - - - - - - - - - - - - Gazebo Properties - - - - - - - - - - - - -->
+    <gazebo reference="Rleft_wheel">
+        <mu>0.001</mu>
+        <mu2>0.001</mu2>
+        <fdir1>1 0 0</fdir1>
+    </gazebo>
+
+    <gazebo reference="Rright_wheel">
+        <mu>0.001</mu>
+        <mu2>0.001</mu2>
+        <fdir1>1 0 0</fdir1>
+    </gazebo>
+
+
+
+</robot>
+
+
+
+
