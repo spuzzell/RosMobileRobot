@@ -4,6 +4,10 @@ This repository contains the full software stack for my mobile robot, covering e
 
 ---
 
+![Rover robot](https://raw.githubusercontent.com/spuzzell/RosMobileRobot/main/Images/render.png)
+
+---
+
 ## Repository Structure
 
 ### **Rover Project**
@@ -23,3 +27,9 @@ This repository contains the full software stack for my mobile robot, covering e
 ### **Bridge Teensy**
 - Handles encoder data acquisition  
 - Sends encoder readings to the ESP32 for closed-loop control
+
+---
+
+![Rover robot](https://raw.githubusercontent.com/spuzzell/RosMobileRobot/main/Images/slam.png)
+
+---
