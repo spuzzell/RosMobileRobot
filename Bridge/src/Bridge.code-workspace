@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "bridge_teensy",
+			"path": "../../bridge_teensy"
+		},
+		{
+			"name": "ros2-esp32-bridge",
+			"path": "../../ros2-esp32-bridge"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"random": "cpp",
+			"memory": "cpp",
+			"optional": "cpp",
+			"*.bak": "cpp"
+		}
+	}
+}
